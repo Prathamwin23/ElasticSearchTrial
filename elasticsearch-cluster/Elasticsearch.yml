@@ -1,0 +1,42 @@
+# Elasticsearch 8.13 Cluster Configuration
+cluster.name: secure-elastic-cluster
+network.host: 0.0.0.0
+
+# Discovery and cluster formation
+discovery.seed_hosts: 
+  - elasticsearch-master:9300
+  - elasticsearch-hot-1:9300
+  - elasticsearch-hot-2:9300
+  - elasticsearch-warm-1:9300
+  - elasticsearch-warm-2:9300
+
+cluster.initial_master_nodes:
+  - elasticsearch-master
+
+# Security Configuration
+xpack.security.enabled: true
+xpack.security.enrollment.enabled: false
+
+# Transport layer TLS
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: certificate
+xpack.security.transport.ssl.client_authentication: required
+xpack.security.transport.ssl.keystore.path: certs/transport.p12
+xpack.security.transport.ssl.truststore.path: certs/transport.p12
+
+# HTTP layer TLS
+xpack.security.http.ssl.enabled: true
+xpack.security.http.ssl.keystore.path: certs/http.p12
+xpack.security.http.ssl.truststore.path: certs/http.p12
+
+# Disable ML and other features for resource optimization
+xpack.ml.enabled: false
+xpack.watcher.enabled: false
+xpack.monitoring.collection.enabled: false
+
+# Performance settings
+bootstrap.memory_lock: true
+indices.query.bool.max_clause_count: 10000
+
+# Logging
+logger.org.elasticsearch.discovery: DEBUG
